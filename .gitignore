@@ -5,3 +5,5 @@ target/
 /.lein-repl-history
 /.nrepl-port
 .calva/*
+client/.vs/
+client/out/

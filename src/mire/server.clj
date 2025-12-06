@@ -3,7 +3,8 @@
             [server.socket :as socket]
             [mire.player :as player]
             [mire.commands :as commands]
-            [mire.rooms :as rooms]))
+            [mire.rooms :as rooms]
+            [mire.spawner :as spawner]))
 
 (defn- cleanup []
   "Drop all inventory and remove player from room and player list."
@@ -22,6 +23,7 @@
     name))
 
 (defn- mire-handle-client [in out]
+  (println "Client connected!")
   (binding [*in* (io/reader in)
             *out* (io/writer out)
             *err* (io/writer System/err)]
@@ -47,9 +49,13 @@
            (finally (cleanup))))))
 
 (defn -main
-  ([port dir]
-     (rooms/add-rooms dir)
-     (defonce server (socket/create-server (Integer. port) mire-handle-client))
-     (println "Launching Mire server on port" port))
-  ([port] (-main port "resources/rooms"))
+  ([port item-dir room-dir]
+  (println "Starting...")
+   (spawner/add-items item-dir)
+   (println " - Items added")
+   (rooms/add-rooms room-dir)
+   (println " - Rooms added")
+   (defonce server (socket/create-server (Integer. port) mire-handle-client))
+   (println " - Cursed Mire server ready. Port:" port))
+  ([port] (-main port "resources/items" "resources/rooms"))
   ([] (-main 3333)))
