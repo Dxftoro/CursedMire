@@ -1,0 +1,15 @@
+{
+    :detector #{
+        :wire
+        :metalpipe
+    }
+
+    :rabbit-meat #{
+        :rabbit
+    }
+
+    :air-purifier #{
+        :sock
+        :bottle
+    }
+}

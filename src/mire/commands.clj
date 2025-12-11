@@ -1,5 +1,6 @@
 (ns mire.commands
   (:require [clojure.string :as str]
+            [mire.items :as items]
             [mire.rooms :as rooms]
             [mire.player :as player]))
 
@@ -61,6 +62,9 @@
   []
   (str "You are carrying:\r\n"
        (str/join "\r\n" (seq @player/*inventory*))))
+
+(defn craft [item]
+  )
 
 (defn detect
   "If you have the detector, you can see which room an item is in."

@@ -4,7 +4,7 @@
             [mire.player :as player]
             [mire.commands :as commands]
             [mire.rooms :as rooms]
-            [mire.spawner :as spawner]))
+            [mire.items :as items]))
 
 (def server (atom nil))
 
@@ -55,16 +55,21 @@
   (reset! server (socket/create-server (Integer. port) mire-handle-client)))
 
 (defn -main
-  ([port item-dir room-dir]
+  ([port item-dir recipe-dir room-dir]
    (println "Starting...")
-   (spawner/add-items item-dir)
+   (items/add-items item-dir)
    (println " - Items added")
+   (items/add-recipes recipe-dir)
+   (println " - Craft recipes added")
    (rooms/add-rooms room-dir)
    (println " - Rooms added")
-   (rooms/generate-loot @spawner/items)
+   (rooms/generate-loot @items/all-items)
    (println " - Loot generated")
 
    (start-server port)
    (println " - Cursed Mire server ready. Port:" port))
-  ([port] (-main port "resources/items" "resources/rooms"))
+  ([port] (-main port 
+                 "resources/items"
+                 "resources/recipes"
+                 "resources/rooms"))
   ([] (-main 3333)))
