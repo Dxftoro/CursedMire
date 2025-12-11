@@ -30,3 +30,14 @@
 (defn room-contains?
   [room thing]
   (@(:items room) (keyword thing)))
+
+(defn generate-room-loot [room items]
+  (dosync 
+   (let [items-ref (:items room)]
+    (doseq [item items]
+     (when (< (rand) 0.3)
+       (alter items-ref conj item))))))
+
+(defn generate-loot [items]
+  (doseq [[room-name room] @rooms]
+    (generate-room-loot room items)))

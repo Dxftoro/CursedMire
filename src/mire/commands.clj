@@ -15,8 +15,8 @@
   "Get a description of the surrounding environs and its contents."
   []
   (str (:desc @player/*current-room*)
-       "\nExits: " (keys @(:exits @player/*current-room*)) "\n"
-       (str/join "\n" (map #(str "There is " % " here.\n")
+       "\r\nExits: " (keys @(:exits @player/*current-room*)) "\r\n"
+       (str/join (map #(str "There is " % " here.\r\n")
                            @(:items @player/*current-room*)))))
 
 (defn move
@@ -59,8 +59,8 @@
 (defn inventory
   "See what you've got."
   []
-  (str "You are carrying:\n"
-       (str/join "\n" (seq @player/*inventory*))))
+  (str "You are carrying:\r\n"
+       (str/join "\r\n" (seq @player/*inventory*))))
 
 (defn detect
   "If you have the detector, you can see which room an item is in."
@@ -86,7 +86,7 @@
 (defn help
   "Show available commands and what they do."
   []
-  (str/join "\n" (map #(str (key %) ": " (:doc (meta (val %))))
+  (str/join "\r\n" (map #(str (key %) ": " (:doc (meta (val %))))
                       (dissoc (ns-publics 'mire.commands)
                               'execute 'commands))))
 

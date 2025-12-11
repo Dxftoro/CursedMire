@@ -6,6 +6,8 @@
             [mire.rooms :as rooms]
             [mire.spawner :as spawner]))
 
+(def server (atom nil))
+
 (defn- cleanup []
   "Drop all inventory and remove player from room and player list."
   (dosync
@@ -25,8 +27,8 @@
 (defn- mire-handle-client [in out]
   (println "Client connected!")
   (binding [*in* (io/reader in)
-            *out* (io/writer out)
-            *err* (io/writer System/err)]
+            *out* (io/writer out)]
+            ;*err* (io/writer System/err)]
 
     ;; We have to nest this in another binding call instead of using
     ;; the one above so *in* and *out* will be bound to the socket
@@ -43,19 +45,26 @@
       (try (loop [input (read-line)]
              (when input
                (println (commands/execute input))
-               (.flush *err*)
+               ;(.flush *err*)
                (print player/prompt) (flush)
                (recur (read-line))))
            (finally (cleanup))))))
 
+(defn start-server [port]
+  (when-let [old @server] (.close old))
+  (reset! server (socket/create-server (Integer. port) mire-handle-client)))
+
 (defn -main
   ([port item-dir room-dir]
-  (println "Starting...")
+   (println "Starting...")
    (spawner/add-items item-dir)
    (println " - Items added")
    (rooms/add-rooms room-dir)
    (println " - Rooms added")
-   (defonce server (socket/create-server (Integer. port) mire-handle-client))
+   (rooms/generate-loot @spawner/items)
+   (println " - Loot generated")
+
+   (start-server port)
    (println " - Cursed Mire server ready. Port:" port))
   ([port] (-main port "resources/items" "resources/rooms"))
   ([] (-main 3333)))
