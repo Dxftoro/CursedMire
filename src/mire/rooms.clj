@@ -35,7 +35,7 @@
   (dosync 
    (let [items-ref (:items room)]
     (doseq [item items]
-     (when (< (rand) 0.3)
+     (when (< (rand) 0.5)
        (alter items-ref conj item))))))
 
 (defn generate-loot [items]

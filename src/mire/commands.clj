@@ -64,7 +64,18 @@
        (str/join "\r\n" (seq @player/*inventory*))))
 
 (defn craft [item]
-  )
+  "Craft something"
+  (let [result (items/craft-item player/*inventory* (keyword item))]
+    (if (:success result)
+      (str "You crafted " (name (:item result)) "!")
+      (:message result))))
+
+(defn recipes []
+  "View all available recipes"
+  (str/join "\n"
+            (map (fn [[item recipe]]
+                   (str (name item) ": " (str/join ", " (map name recipe))))
+                   (items/get-available-recipes @player/*inventory*))))
 
 (defn detect
   "If you have the detector, you can see which room an item is in."
@@ -104,6 +115,8 @@
                "grab" grab
                "discard" discard
                "inventory" inventory
+               "craft" craft
+               "recipes" recipes
                "detect" detect
                "look" look
                "say" say

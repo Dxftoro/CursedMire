@@ -4,12 +4,23 @@
         :metalpipe
     }
 
-    :rabbit-meat #{
-        :rabbit
+    :bunny-meat #{
+        :bunny
     }
 
     :air-purifier #{
         :sock
         :bottle
+    }
+
+    :bunny-pipe #{
+        :bunny
+        :metalpipe
+    }
+
+    :gorshenev #{
+        :plafon
+        :bottle
+        :air-purifier
     }
 }
