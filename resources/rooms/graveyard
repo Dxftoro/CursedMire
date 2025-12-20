@@ -1,0 +1,3 @@
+{   :desc "Abandoned graveyard keeps silence."
+    :exits {:west :east :south :north}
+    :items #{}}

@@ -63,15 +63,17 @@
   (str "You are carrying:\r\n"
        (str/join "\r\n" (seq @player/*inventory*))))
 
-(defn craft [item]
-  "Craft something"
+(defn craft
+		"Craft something."
+		[item]
   (let [result (items/craft-item player/*inventory* (keyword item))]
     (if (:success result)
       (str "You crafted " (name (:item result)) "!")
       (:message result))))
 
-(defn recipes []
-  "View all available recipes"
+(defn recipes
+		"View all available recipes."
+		[]
   (str/join "\n"
             (map (fn [[item recipe]]
                    (str (name item) ": " (str/join ", " (map name recipe))))
